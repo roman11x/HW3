@@ -636,8 +636,29 @@ public class Hospital {
 	public void setVisits(HashMap<Integer, Visit> visits) {
 		this.visits = visits;
 	}
-	
-	
+
+	//User Handling
+	// Method to authenticate a user
+	public StaffMember authenticate(Integer ID, String password) {
+		StaffMember user = staffMembers.get(ID);
+		if (user != null && user.getPassword().equals(password)) {
+			System.out.println("Authentication successful.");
+			return user;
+		} else {
+			System.out.println("Authentication failed.");
+			return null;
+		}
+	}
+	// Method to update a user's password
+	public void updateUserPassword(Integer ID, String newPassword) {
+		StaffMember user = staffMembers.get(ID);
+		if (user != null) {
+			user.setPassword(newPassword);
+			System.out.println("Password updated successfully.");
+		} else {
+			System.out.println("User not found.");
+		}
+	}
 	
 	
 }
