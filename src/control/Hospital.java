@@ -659,7 +659,6 @@ public class Hospital {
 			System.out.println("User not found.");
 		}
 	}
-	
-	
+
 }
 		
