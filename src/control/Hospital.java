@@ -1,8 +1,6 @@
 package control;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -18,7 +16,7 @@ import utils.UtilsMethods;
 import view.Main;
 
 public class Hospital {
-	
+
 	private static Hospital instance ;
 	private HashMap<Integer,Department>departments;
 	private HashMap<String,MedicalProblem>medicalProblems;
@@ -28,8 +26,8 @@ public class Hospital {
 	private HashMap<Integer,Treatment>treatments;
 	private HashMap<Integer,Visit>visits;
 	public final static Date TODAY=UtilsMethods.parseDate("30/04/2024");
-	
-	
+
+
 	//private constructor
 	private Hospital() {
 		super();
@@ -48,8 +46,8 @@ public class Hospital {
 		}
 		return instance;
 	}
-	
-	
+
+
 	//add
 	public boolean addDoctorToDepartment(Department department,Doctor doctor) {
 		if(department==null||doctor==null) {
@@ -64,7 +62,7 @@ public class Hospital {
 				return department.addDoctor(doctor);
 
 	}
-	
+
 	public boolean addNurseToDepartment(Department department,Nurse nurse) {
 		if(department==null||nurse==null) {
 			throw new NullPointerException();
@@ -77,8 +75,8 @@ public class Hospital {
 		}
 				return department.addNurse(nurse);
 	}
-	
-	
+
+
 	public boolean addDepartment(Department department) {
 		if(department==null) {
 			throw new NullPointerException();
@@ -88,11 +86,11 @@ public class Hospital {
 		}
 		return departments.put(department.getNumber(),department)==null;
 	}
-	
+
 	public boolean addDisease(Disease disease) {
 		return addMedicalProblem(disease);
 	}
-	
+
 	public boolean addMedicalProblem(MedicalProblem medicalProblem) {
 		if(medicalProblem==null) {
 			throw new NullPointerException();
@@ -105,7 +103,7 @@ public class Hospital {
 			if(!treatment.addMedicalProblem(medicalProblem)) {
 				flag=false;
 			}
-			
+
 		}
 		if (flag==true) {
 			flag=medicalProblems.put(medicalProblem.getCode(),medicalProblem)==null;
@@ -117,15 +115,15 @@ public class Hospital {
 		}
 		return flag;
 	}
-	
+
 	public boolean addFracture(Fracture fracture) {
 		return addMedicalProblem(fracture);
 	}
-	
+
 	public boolean addInjury(Injury injury) {
 		return addMedicalProblem(injury);
 	}
-	
+
 	public boolean addMedication(Medication medication) {
 		if(medication==null) {
 			return false;
@@ -135,7 +133,7 @@ public class Hospital {
 		}
 		return medications.put(medication.getCode(),medication)==null;
 	}
-	
+
 	public boolean addStaffMember(StaffMember staffMember) {
 		if(staffMember==null) {
 			throw new NullPointerException();
@@ -145,23 +143,23 @@ public class Hospital {
 		}
 		return staffMembers.put(staffMember.getId(),staffMember)==null;
 	}
-	
+
 	public boolean addDoctor(Doctor doctor) {
 		return addStaffMember(doctor);
 	}
-	
+
 	public boolean addIntensiveCareDoctor(IntensiveCareDoctor doctor) {
 		return addStaffMember(doctor);
 	}
-	
+
 	public boolean addNurse(Nurse nurse) {
 		return addStaffMember(nurse);
 	}
-	
+
 	public boolean addIntensiveCareNurse(IntensiveCareNurse nurse) {
 		return addStaffMember(nurse);
 	}
-	
+
 	public boolean addPatient(Patient patient) {
 		if(patient==null) {
 			throw new NullPointerException();
@@ -169,9 +167,17 @@ public class Hospital {
 		if (patients.containsKey(patient.getId())) {
 			throw new ObjectAlreadyExistsException(patient,this.getClass().getSimpleName());
 		}
+		try{
+			BufferedWriter writer = new BufferedWriter(new FileWriter("patients.txt", true));
+            writer.write(patient.toString());
+			writer.newLine();
+			writer.close();
+		} catch(IOException e){
+			e.printStackTrace();
+		}
 		return patients.put(patient.getId(),patient)==null;
 	}
-	
+
 	public boolean addTreatment(Treatment treatment) {
 		if(treatment==null) {
 			throw new NullPointerException();
@@ -181,7 +187,7 @@ public class Hospital {
 		}
 		return treatments.put(treatment.getSerialNumber(),treatment)==null;
 	}
-	
+
 	public boolean addVisit(Visit visit) {
 		if(visit==null) {
 			throw new NullPointerException();
@@ -193,7 +199,7 @@ public class Hospital {
 			return visits.put(visit.getNumber(),visit)==null;
 		return false;
 	}
-	
+
 	//remove
 	public boolean removeDepartment(Department department) {
 		if(department==null) {
@@ -212,7 +218,7 @@ public class Hospital {
 		}
 		return departments.remove(department.getNumber())!=null;
 	}
-	
+
 	public boolean removeMedicalProblem(MedicalProblem medicalProblem) {
 		if(medicalProblem==null) {
 			throw new NullPointerException();
@@ -231,15 +237,15 @@ public class Hospital {
 	public boolean removeDisease(Disease disease) {
 		return removeMedicalProblem(disease);
 	}
-	
+
 	public boolean removeFracture(Fracture fracture) {
 		return removeMedicalProblem(fracture);
 	}
-	
+
 	public boolean removeInjury(Injury injury) {
 		return removeMedicalProblem(injury);
 	}
-	
+
 	public boolean removeMedication(Medication medication) {
 		if(medication==null) {
 			throw new NullPointerException();
@@ -252,7 +258,7 @@ public class Hospital {
 		}
 		return medications.remove(medication.getCode())!=null;
 	}
-	
+
 	public boolean removeStaffMember(StaffMember staffMember) {
 		if(staffMember==null) {
 			throw new NullPointerException();
@@ -268,15 +274,15 @@ public class Hospital {
 		}
 		return staffMembers.remove(staffMember.getId()) != null;
 	}
-	
+
 	public boolean removeDoctor(Doctor doctor) {
 		return removeStaffMember(doctor);
 	}
-	
+
 	public boolean removeNurse(Nurse nurse) {
 		return removeStaffMember(nurse);
 	}
-	
+
 	public boolean removePatient(Patient patient) {
 		if(patient==null) {
 			throw new NullPointerException();
@@ -289,7 +295,7 @@ public class Hospital {
 		}
 		return patients.remove(patient.getId()) != null;
 	}
-	
+
 	public boolean removeTreatment(Treatment treatment) {
 		if(treatment==null) {
 			throw new NullPointerException();
@@ -305,7 +311,7 @@ public class Hospital {
 		}
 		return treatments.remove(treatment.getSerialNumber()) != null;
 	}
-	
+
 	public boolean removeVisit(Visit visit) {
 		if(visit==null) {
 			throw new NullPointerException();
@@ -317,7 +323,7 @@ public class Hospital {
 		}
 		return visits.remove(visit.getNumber()) != null;
 	}
-	
+
 	//getReal
 	public Department getRealDepartment(Integer number) {
 		if(!departments.containsKey(number)) {
@@ -325,27 +331,27 @@ public class Hospital {
 		}
 		return departments.get(number);
 	}
-	
+
 	public MedicalProblem getMedicalProblem(String code) {
 		if(!medicalProblems.containsKey(code)) {
 			throw new ObjectDoesNotExist(code, "MedicalProblem", this.getClass().getSimpleName());
 		}
 		return medicalProblems.get(code);
 	}
-	
+
 	public Disease getRealDisease(String code) {
 		return (Disease) getMedicalProblem(code);
 	}
-	
+
 	public Fracture getRealFracture(String code) {
 		return (Fracture) getMedicalProblem(code);
 	}
-	
+
 
 	public Injury getRealInjury(String code) {
 		return (Injury) getMedicalProblem(code);
 	}
-	
+
 	public StaffMember getStaffMember(Integer id) {
 		if(!staffMembers.containsKey(id)) {
 			throw new ObjectDoesNotExist(id, "StaffMember", this.getClass().getSimpleName());
@@ -355,40 +361,40 @@ public class Hospital {
 	public Doctor getRealDoctor(int id) {
 		return (Doctor) getStaffMember(id);
 	}
-	
+
 	public Nurse getRealNurse(int id) {
 		return (Nurse) getStaffMember(id);
 	}
-	
+
 	public Patient getRealPatient(Integer id) {
 		if(!patients.containsKey(id)) {
 			throw new ObjectDoesNotExist(id, "Patient", this.getClass().getSimpleName());
 		}
 		return patients.get(id);
 	}
-	
-	
+
+
 	public Medication getRealMedication(Integer code) {
 		if(!medications.containsKey(code)) {
 			throw new ObjectDoesNotExist(code, "Medication", this.getClass().getSimpleName());
 		}
 		return medications.get(code);
 	}
-	
+
 	public Treatment getRealTreatment(Integer number) {
 		if(!treatments.containsKey(number)) {
 			throw new ObjectDoesNotExist(number, "Treatment", this.getClass().getSimpleName());
 		}
 		return treatments.get(number);
 	}
-	
+
 	public Visit getRealVisit(Integer number) {
 		if(!visits.containsKey(number)) {
 			throw new ObjectDoesNotExist(number, "Visit", this.getClass().getSimpleName());
 		}
 		return visits.get(number);
 	}
-	
+
 	//Queries
 	public int countMedications(double min_dosage, double max_dosage) {
 		//Returns the number of medications that have bigger dosage then the min and smaller then the max
@@ -400,7 +406,7 @@ public class Hospital {
 		}
 		return count;
 	}
-	
+
 	public double differenceBetweenTheLongestAndShortestVisit(Patient patient) {
 		//Returns the difference Between The Longest And Shortest Visit of the patient
 		double longestVisit=Double.MIN_VALUE;
@@ -415,7 +421,7 @@ public class Hospital {
 		}
 		return longestVisit-shortestVisit;
 	}
-	
+
 	public void printHowManyFinishInternship() {
 		//print the number of doctors that finish internship
 		int count=0;
@@ -429,7 +435,7 @@ public class Hospital {
 		}
 		MyFileLogWriter.println("The number of doctors that finish internship is: "+count);
 	}
-	
+
 	public int howManyVisitBefore(Date date) {
 		//Returns how many patients have a visit that end before the date
 		int count=0;
@@ -446,7 +452,7 @@ public class Hospital {
 		}
 		return count;
 	}
-	
+
 	public void printOldestNurse() {
 		//Prints the details of the nurse that have works the longest time
 		Nurse oldestNurse=null;
@@ -461,7 +467,7 @@ public class Hospital {
 		}
 		MyFileLogWriter.println("The oldest Nurse in the job is : "+oldestNurse);
 	}
-	
+
 	public HashMap<StaffMember, ArrayList<Department>>staffMembersThatWorksInMoreThenOneDepartment(){
 		//Returns the StaffMembers that have more then one Department
 		HashMap<StaffMember, ArrayList<Department>>result=new HashMap<StaffMember, ArrayList<Department>>();
@@ -472,7 +478,7 @@ public class Hospital {
 		}
 		return result;
 	}
-	
+
 	public HashMap<Department, HashMap<MedicalProblem, ArrayList<Treatment>>>getTreatmentsByMedicalProblemsByDepartment(){
 		//Returns for each Department the MedicalProblems that treatments in it and their Treatments
 		HashMap<Department, HashMap<MedicalProblem, ArrayList<Treatment>>>result=
@@ -485,7 +491,7 @@ public class Hospital {
 		}
 		return result;
 	}
-	
+
 	public HashMap<Specialization, Integer>getNumberOfDoctorsBySpecialization(){
 		//Returns for each Specialization the Number of Doctors that Specialize in it
 		HashMap<Specialization, Integer>result=new HashMap<Specialization, Integer>();
@@ -504,7 +510,7 @@ public class Hospital {
 		}
 		return result;
 	}
-	
+
 	public int howManyIntensiveCareStaffMembers() {
 		//Returns the number of StaffMembers that are IntensiveCareStaffMembers
 		int count=0;
@@ -515,7 +521,7 @@ public class Hospital {
 		}
 		return count;
 	}
-	
+
 	public double avgSalary() {
 		//Returns the average salary of all the StaffMembers
 		double sum=0.0;
@@ -525,7 +531,7 @@ public class Hospital {
 		return sum/staffMembers.size();
 	}
 
-	
+
 	public boolean isCompliesWithTheMinistryOfHealthStandard() {
 		/*Checks if the hospital complies with the ministry of health standard. a.k.a:
 		 * a. more then 50% IntensiveCareStaffMembers
@@ -537,7 +543,7 @@ public class Hospital {
 				(howManyIntensiveCareStaffMembers()/staffMembers.size())>=
 				requiredPercentOfIntensiveCareStaffMembers);
 	}
-	
+
 	public Doctor AppointANewManager(Department department){
 		/* The method Appoint a new manager to the department:
 		 * Fired the old manager if exist
@@ -557,9 +563,9 @@ public class Hospital {
 		}
 		doctor.setSalary(doctor.getSalary()+5000);
 		department.setmanager(doctor);
-		return doctor;	
+		return doctor;
 	}
-	
+
 	public Doctor getOldestDoctor(Department department) {
 		/*Finds the doctor from the department that is works the most time,
 		 *that have finish internship
@@ -576,14 +582,14 @@ public class Hospital {
 					}
 				}
 			}
-		}	
+		}
 		return oldestdoctor;
 	}
-	
 
-	
-	
-	
+
+
+
+
 	//getters
 	public HashMap<Integer, Department> getDepartments() {
 		return departments;
@@ -606,7 +612,7 @@ public class Hospital {
 	public HashMap<Integer, Visit> getVisits() {
 		return visits;
 	}
-	
+
 	public Department searchDepartmentBySpecialization(Specialization specialization) {
 		//search Department that it's specialization much the required specialization
 		for(Department department:departments.values()) {
@@ -616,7 +622,7 @@ public class Hospital {
 		}
 		return null;
 	}
-	
+
 	//setters
 	public void setDepartments(HashMap<Integer, Department> departments) {
 		this.departments = departments;
@@ -667,4 +673,3 @@ public class Hospital {
 
 
 }
-		
