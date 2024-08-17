@@ -17,11 +17,11 @@ import control.Hospital;
 import enums.*;
 import model.*;
 
+import javax.swing.*;
+
 public class Main {
-
-
 	private static Hospital hospital = Hospital.getInstance();
     public static void main(String[] args) {
-
+     LoginScreen loginScreen = new LoginScreen();
 	}
 }
