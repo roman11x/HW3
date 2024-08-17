@@ -94,7 +94,7 @@ public class LoginScreen extends JFrame implements ActionListener {
         if(e.getSource() == loginButton) {
             String password = new String(passwordField.getPassword());
             if(usernameField.getText().equals("ADMIN")&&password.equals("ADMIN")) {
-                MainMenu mainMenu = new MainMenu();
+                AdminMainMenu mainMenu = new AdminMainMenu();
                 this.dispose();
             }
         }
