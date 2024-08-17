@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 public class AdminMainMenu extends JFrame implements ActionListener {
     // Components
     private JButton signupButton = new JButton("Sign Up Staff");
+
     private ImageIcon adminIcon = new ImageIcon("adminIcon.png");
 
     // Constructor
@@ -36,7 +37,7 @@ public class AdminMainMenu extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == signupButton) {
             // Open the SignupForm
-            new SignupForm();
+            new SignUpForm();
         }
     }
 
