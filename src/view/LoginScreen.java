@@ -14,7 +14,7 @@ public class LoginScreen extends JFrame {
     JLabel passwordLabel = new JLabel();
     JTextField usernameField = new JTextField(15); // Wider field
     JPasswordField passwordField = new JPasswordField(15); // Wider field
-    JButton loginButton = new JButton("Login");
+    JButton loginButton = new JButton();
 
     // Constructor
     LoginScreen() {
