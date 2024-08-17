@@ -2,13 +2,16 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class LoginScreen extends JFrame {
+public class LoginScreen extends JFrame implements ActionListener {
     // Components
     ImageIcon userIcon = new ImageIcon("userIcon2.png");
     ImageIcon icon = new ImageIcon("img_1.png");
     ImageIcon passwordIcon = new ImageIcon("passIcon2.png");
     ImageIcon loginIcon = new ImageIcon("loginKey.png");
+    ImageIcon titleIcon = new ImageIcon("anchorIcon.png");
     JLabel title = new JLabel();
     JLabel usernameLabel = new JLabel();
     JLabel passwordLabel = new JLabel();
@@ -25,13 +28,14 @@ public class LoginScreen extends JFrame {
         this.setIconImage(icon.getImage());
 
         title.setText("Welcome To The Hanamal Hospital!");
-        title.setForeground(Color.WHITE);
+        title.setForeground(Color.BLUE);
         title.setFont(new Font("Serif", Font.BOLD, 20));
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout());
+        title.setIcon(titleIcon);
         topPanel.add(title);
-        topPanel.setBackground(Color.BLUE);
+        topPanel.setBackground(Color.WHITE);
         this.add(topPanel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel();
@@ -77,13 +81,23 @@ public class LoginScreen extends JFrame {
         bottomPanel.setBackground(Color.WHITE);
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); // Center the button
         loginButton.setIcon(loginIcon);
+        loginButton.addActionListener(this);
         bottomPanel.add(loginButton);
         this.add(bottomPanel, BorderLayout.SOUTH);
 
         this.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new LoginScreen());
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == loginButton) {
+            String password = new String(passwordField.getPassword());
+            if(usernameField.getText().equals("ADMIN")&&password.equals("ADMIN")) {
+                MainMenu mainMenu = new MainMenu();
+                this.dispose();
+            }
+        }
+
     }
 }
