@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
@@ -8,7 +9,7 @@ import enums.Specialization;
 import exceptions.ObjectAlreadyExistsException;
 import exceptions.ObjectDoesNotExist;
 
-public class Department {
+public class Department implements Serializable {
 	
 	private int number;//PK
 	private String name;

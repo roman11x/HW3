@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.net.NoRouteToHostException;
 import java.util.Date;
 import java.util.HashSet;
@@ -7,7 +8,7 @@ import java.util.HashSet;
 import control.Hospital;
 import enums.Specialization;
 
-public class IntensiveCareDoctor extends Doctor implements IntensiveCareStaffMember{
+public class IntensiveCareDoctor extends Doctor implements IntensiveCareStaffMember, Serializable {
 
 	//Constructors
 	public IntensiveCareDoctor(int id, String firstName, String lastName, Date birthDate, String address,

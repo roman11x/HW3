@@ -95,6 +95,9 @@ public class AdminMainMenu extends JFrame implements ActionListener {
             // Open the SignupForm
             new SignUpForm();
         }
+        if(e.getSource() == addPatientButton){
+            new  AddPatientMenu();
+        }
     }
     public static void main(String[] args) {
         new AdminMainMenu();

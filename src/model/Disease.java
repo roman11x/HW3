@@ -1,11 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import utils.MyFileLogWriter;
 
-public class Disease extends MedicalProblem{
+public class Disease extends MedicalProblem implements Serializable {
 	
 	private String description;
 
