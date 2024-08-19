@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +14,8 @@ import exceptions.ObjectDoesNotExist;
 public class Patient extends Person implements Serializable {
 
 	//Fields
+	@Serial
+	private static final long serialVersionUID = 1L;
 	private HashSet<Visit> visitsList;
 	private HealthFund healthFund;
 	private BiologicalSex biologicalSex;

@@ -15,7 +15,7 @@ import utils.MyFileLogWriter;
 import utils.UtilsMethods;
 import view.Main;
 
-public class Hospital {
+public class Hospital implements Serializable {
 
 	private static Hospital instance ;
 	private HashMap<Integer,Department>departments;
@@ -38,6 +38,7 @@ public class Hospital {
 		this.patients = new HashMap<>();
 		this.treatments = new HashMap<>();
 		this.visits = new HashMap<>();
+		loadPatients();
 	}
 	//getInstance
 	public static Hospital getInstance() {
@@ -167,15 +168,8 @@ public class Hospital {
 		if (patients.containsKey(patient.getId())) {
 			throw new ObjectAlreadyExistsException(patient,this.getClass().getSimpleName());
 		}
-		try{
-			BufferedWriter writer = new BufferedWriter(new FileWriter("patients.txt", true));
-            writer.write(patient.toString());
-			writer.newLine();
-			writer.close();
-		} catch(IOException e){
-			e.printStackTrace();
-		}
-		return patients.put(patient.getId(),patient)==null;
+		patients.put(patient.getId(),patient);
+		return savePatients();
 	}
 
 	public boolean addTreatment(Treatment treatment) {
@@ -670,6 +664,25 @@ public class Hospital {
 	}
 
 	//file handling
-
+	private void loadPatients() {
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Hospital.ser"))) {
+			patients = (HashMap<Integer, Patient>) ois.readObject();
+		} catch (FileNotFoundException e) {
+			patients = new HashMap<>(); // If file doesn't exist, start with an empty map
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			patients = new HashMap<>(); // If there's an error, start with an empty map
+		}
+	}
+	private boolean savePatients() {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Hospital.ser"))) {
+			oos.writeObject(patients);
+			oos.flush();
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 }
