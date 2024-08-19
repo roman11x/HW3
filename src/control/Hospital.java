@@ -85,7 +85,8 @@ public class Hospital implements Serializable {
 		if (departments.containsKey(department.getNumber())) {
 			throw new ObjectAlreadyExistsException(department,this.getClass().getSimpleName());
 		}
-		return departments.put(department.getNumber(),department)==null;
+		 departments.put(department.getNumber(),department);
+		return saveDepartments();
 	}
 
 	public boolean addDisease(Disease disease) {
@@ -698,6 +699,26 @@ public class Hospital implements Serializable {
 	public boolean saveStaffMembers() {
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Hospital.ser"))) {
 			oos.writeObject(staffMembers);
+			oos.flush();
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public void loadDepartments() {
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Hospital.ser"))) {
+			departments = (HashMap<Integer, Department>) ois.readObject();
+		} catch (FileNotFoundException e) {
+			departments = new HashMap<>(); // If file doesn't exist, start with an empty map
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			departments = new HashMap<>(); // If there's an error, start with an empty map
+		}
+	}
+	public boolean saveDepartments() {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Hospital.ser"))) {
+			oos.writeObject(departments);
 			oos.flush();
 			return true;
 		} catch (IOException e) {

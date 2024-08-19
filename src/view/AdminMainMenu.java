@@ -98,6 +98,9 @@ public class AdminMainMenu extends JFrame implements ActionListener {
         if(e.getSource() == addPatientButton){
             new  AddPatientMenu();
         }
+        if(e.getSource() == addDepartmentButton){
+            new AddDepartmentMenu();
+        }
     }
     public static void main(String[] args) {
         new AdminMainMenu();
